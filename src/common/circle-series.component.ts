@@ -48,7 +48,7 @@ import { id } from '../utils/id';
         [r]="circle.radius"
         [fill]="circle.color"
         [class.active]="isActive({name: circle.seriesName})"
-        [pointerEvents]="circle.value === 0 ? 'none': 'all'"
+        [pointerEvents]="'all'"
         [data]="circle.value"
         [classNames]="circle.classNames"
         (select)="onClick($event, circle.label)"
