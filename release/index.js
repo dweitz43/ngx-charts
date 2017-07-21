@@ -9482,59 +9482,57 @@ var CircleSeriesComponent = (function () {
             var value = d.value;
             var label = d.name;
             var tooltipLabel = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__common_label_helper__["a" /* formatLabel */])(label);
-            if (value) {
-                var cx = void 0;
-                if (_this.scaleType === 'time') {
-                    cx = _this.xScale(label);
-                }
-                else if (_this.scaleType === 'linear') {
-                    cx = _this.xScale(Number(label));
-                }
-                else {
-                    cx = _this.xScale(label);
-                }
-                var cy = _this.yScale(_this.type === 'standard' ? value : d.d1);
-                var radius = 5;
-                var height = _this.yScale.range()[0] - cy;
-                var opacity = 0;
-                if (label && _this.visibleValue && label.toString() === _this.visibleValue.toString()) {
-                    opacity = 1;
-                }
-                var color = void 0;
-                if (_this.colors.scaleType === 'linear') {
-                    if (_this.type === 'standard') {
-                        color = _this.colors.getColor(value);
-                    }
-                    else {
-                        color = _this.colors.getColor(d.d1);
-                    }
-                }
-                else {
-                    color = _this.colors.getColor(seriesName);
-                }
-                var data = {
-                    series: seriesName,
-                    value: value,
-                    name: label
-                };
-                return {
-                    classNames: ["circle-data-" + i],
-                    value: value,
-                    label: label,
-                    data: data,
-                    cx: cx,
-                    cy: cy,
-                    radius: radius,
-                    height: height,
-                    tooltipLabel: tooltipLabel,
-                    color: color,
-                    opacity: opacity,
-                    seriesName: seriesName,
-                    gradientStops: _this.getGradientStops(color),
-                    min: d.min,
-                    max: d.max
-                };
+            var cx;
+            if (_this.scaleType === 'time') {
+                cx = _this.xScale(label);
             }
+            else if (_this.scaleType === 'linear') {
+                cx = _this.xScale(Number(label));
+            }
+            else {
+                cx = _this.xScale(label);
+            }
+            var cy = _this.yScale(_this.type === 'standard' ? value : d.d1);
+            var radius = 5;
+            var height = _this.yScale.range()[0] - cy;
+            var opacity = 0;
+            if (label && _this.visibleValue && label.toString() === _this.visibleValue.toString()) {
+                opacity = 1;
+            }
+            var color;
+            if (_this.colors.scaleType === 'linear') {
+                if (_this.type === 'standard') {
+                    color = _this.colors.getColor(value);
+                }
+                else {
+                    color = _this.colors.getColor(d.d1);
+                }
+            }
+            else {
+                color = _this.colors.getColor(seriesName);
+            }
+            var data = {
+                series: seriesName,
+                value: value,
+                name: label
+            };
+            return {
+                classNames: ["circle-data-" + i],
+                value: value,
+                label: label,
+                data: data,
+                cx: cx,
+                cy: cy,
+                radius: radius,
+                height: height,
+                tooltipLabel: tooltipLabel,
+                color: color,
+                opacity: opacity,
+                seriesName: seriesName,
+                gradientStops: _this.getGradientStops(color),
+                min: d.min,
+                max: d.max
+            };
         }).filter(function (circle) { return circle !== undefined; });
     };
     CircleSeriesComponent.prototype.getTooltipText = function (_a) {
