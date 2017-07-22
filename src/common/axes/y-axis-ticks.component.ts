@@ -78,6 +78,7 @@ import { scaleBand } from 'd3-scale';
           <svg:text
             stroke-width="0.01"
             [attr.transform]="transform(refLine.value)"
+            [attr.fill]="refLine.color"
             [attr.dy]="dy"
             [attr.x]="x1"
             [attr.y]="y1"
