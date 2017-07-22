@@ -74,6 +74,17 @@ import { scaleBand } from 'd3-scale';
             [attr.text-anchor]="textAnchor" >
             {{refLine.name}}
           </svg:text>
+
+          <svg:text
+            stroke-width="0.01"
+            [attr.transform]="transform(refLine.value)"
+            [attr.dy]="dy"
+            [attr.x]="x1"
+            [attr.y]="y1"
+            [attr.text-anchor]="textAnchor"
+            [style.font-size]="'12px'">
+            {{trimLabel(tickFormat(refLine.value))}}
+          </svg:text>
         </svg:g>
       </svg:g>
     </svg:g>
