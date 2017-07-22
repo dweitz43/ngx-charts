@@ -59,12 +59,15 @@ import { scaleBand } from 'd3-scale';
       <svg:g *ngIf="showRefLines" [attr.transform]="transform(refLine.value)">
         <svg:line class="refline-path gridline-path-horizontal"
           x1="0"
+          [fill]="refLine.color"
+          [stroke]="refLine.color"
           [attr.x2]="gridLineWidth"
           [attr.transform]="gridLineTransform()"/>
         <svg:g *ngIf="showRefLabels">
           <title>{{trimLabel(tickFormat(refLine.value))}}</title>
           <svg:text
             class="refline-label"
+            [attr.fill]="refLine.color"
             [attr.dy]="dy"
             [attr.y]="-6"
             [attr.x]="gridLineWidth"
