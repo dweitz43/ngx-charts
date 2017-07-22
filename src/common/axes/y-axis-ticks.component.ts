@@ -83,7 +83,7 @@ import { scaleBand } from 'd3-scale';
             [attr.y]="y1"
             [attr.text-anchor]="textAnchor"
             [style.font-size]="'12px'">
-            {{refLine.value | number:'1.0-2'}}
+            {{refLine.value | number:'1.1-2'}}
           </svg:text>
         </svg:g>
       </svg:g>
