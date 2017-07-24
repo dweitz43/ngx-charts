@@ -9599,9 +9599,9 @@ var CircleSeriesComponent = (function () {
         this.activate.emit({ name: this.data.name });
     };
     CircleSeriesComponent.prototype.deactivateCircle = function () {
-        this.barVisible = false;
-        this.circle.opacity = 0;
-        this.deactivate.emit({ name: this.data.name });
+        // this.barVisible = false;
+        // this.circle.opacity = 0;
+        // this.deactivate.emit({name: this.data.name});
     };
     return CircleSeriesComponent;
 }());

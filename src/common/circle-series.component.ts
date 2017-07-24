@@ -253,9 +253,9 @@ export class CircleSeriesComponent implements OnChanges, OnInit {
   }
 
   deactivateCircle(): void {
-    this.barVisible = false;
-    this.circle.opacity = 0;
-    this.deactivate.emit({name: this.data.name});
+    // this.barVisible = false;
+    // this.circle.opacity = 0;
+    // this.deactivate.emit({name: this.data.name});
   }
 
 }
