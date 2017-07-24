@@ -46,7 +46,7 @@ var TooltipDirective = (function () {
         configurable: true
     });
     TooltipDirective.prototype.ngOnDestroy = function () {
-        //this.hideTooltip(true);
+        this.hideTooltip(true);
     };
     TooltipDirective.prototype.onFocus = function () {
         if (this.listensForFocus) {
@@ -55,6 +55,7 @@ var TooltipDirective = (function () {
     };
     TooltipDirective.prototype.onBlur = function () {
         if (this.listensForFocus) {
+            this.hideTooltip(true);
         }
     };
     TooltipDirective.prototype.onMouseEnter = function () {
@@ -71,10 +72,12 @@ var TooltipDirective = (function () {
                 if (contains)
                     return;
             }
+            this.hideTooltip(this.tooltipImmediateExit);
         }
     };
     TooltipDirective.prototype.onMouseClick = function () {
         if (this.listensForHover) {
+            this.hideTooltip(true);
         }
     };
     TooltipDirective.prototype.showTooltip = function (immediate) {
@@ -105,20 +108,22 @@ var TooltipDirective = (function () {
         // content mouse leave listener
         if (this.tooltipCloseOnMouseLeave) {
             this.mouseLeaveContentEvent = this.renderer.listen(tooltip, 'mouseleave', function () {
-                //this.hideTooltip(this.tooltipImmediateExit);
+                _this.hideTooltip(_this.tooltipImmediateExit);
             });
         }
         // content close on click outside
         if (this.tooltipCloseOnClickOutside) {
             this.documentClickEvent = this.renderer.listen(document, 'click', function (event) {
                 var contains = tooltip.contains(event.target);
-                //if(!contains) this.hideTooltip();
+                if (!contains)
+                    _this.hideTooltip();
             });
         }
     };
     TooltipDirective.prototype.hideTooltip = function (immediate) {
         var _this = this;
         if (immediate === void 0) { immediate = false; }
+        debugger;
         if (!this.component)
             return;
         var destroyFn = function () {
