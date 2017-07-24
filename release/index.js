@@ -9481,6 +9481,7 @@ var CircleSeriesComponent = (function () {
         return this.data.series.map(function (d, i) {
             var value = d.value;
             var label = d.name;
+            var game = d.game;
             var tooltipLabel = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__common_label_helper__["a" /* formatLabel */])(label);
             var cx;
             if (_this.scaleType === 'time') {
@@ -9514,7 +9515,8 @@ var CircleSeriesComponent = (function () {
             var data = {
                 series: seriesName,
                 value: value,
-                name: label
+                name: label,
+                game: game
             };
             return {
                 classNames: ["circle-data-" + i],

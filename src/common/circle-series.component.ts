@@ -128,6 +128,7 @@ export class CircleSeriesComponent implements OnChanges, OnInit {
     return this.data.series.map((d, i) => {
       const value = d.value;
       const label = d.name;
+      const game = d.game;
       const tooltipLabel = formatLabel(label);
 
       let cx;
@@ -162,7 +163,8 @@ export class CircleSeriesComponent implements OnChanges, OnInit {
       const data = {
         series: seriesName,
         value,
-        name: label
+        name: label,
+        game
       };
 
       return {
