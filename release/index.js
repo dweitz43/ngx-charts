@@ -12620,7 +12620,6 @@ var TooltipDirective = (function () {
     TooltipDirective.prototype.hideTooltip = function (immediate) {
         var _this = this;
         if (immediate === void 0) { immediate = false; }
-        debugger;
         if (!this.component)
             return;
         var destroyFn = function () {
