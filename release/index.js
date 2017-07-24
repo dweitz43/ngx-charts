@@ -9599,9 +9599,9 @@ var CircleSeriesComponent = (function () {
         this.activate.emit({ name: this.data.name });
     };
     CircleSeriesComponent.prototype.deactivateCircle = function () {
-        // this.barVisible = false;
-        // this.circle.opacity = 0;
-        // this.deactivate.emit({name: this.data.name});
+        this.barVisible = false;
+        this.circle.opacity = 0;
+        this.deactivate.emit({ name: this.data.name });
     };
     return CircleSeriesComponent;
 }());
@@ -12543,7 +12543,7 @@ var TooltipDirective = (function () {
         configurable: true
     });
     TooltipDirective.prototype.ngOnDestroy = function () {
-        this.hideTooltip(true);
+        //this.hideTooltip(true);
     };
     TooltipDirective.prototype.onFocus = function () {
         if (this.listensForFocus) {
@@ -12552,7 +12552,6 @@ var TooltipDirective = (function () {
     };
     TooltipDirective.prototype.onBlur = function () {
         if (this.listensForFocus) {
-            this.hideTooltip(true);
         }
     };
     TooltipDirective.prototype.onMouseEnter = function () {
@@ -12569,12 +12568,10 @@ var TooltipDirective = (function () {
                 if (contains)
                     return;
             }
-            this.hideTooltip(this.tooltipImmediateExit);
         }
     };
     TooltipDirective.prototype.onMouseClick = function () {
         if (this.listensForHover) {
-            this.hideTooltip(true);
         }
     };
     TooltipDirective.prototype.showTooltip = function (immediate) {
@@ -12605,15 +12602,14 @@ var TooltipDirective = (function () {
         // content mouse leave listener
         if (this.tooltipCloseOnMouseLeave) {
             this.mouseLeaveContentEvent = this.renderer.listen(tooltip, 'mouseleave', function () {
-                _this.hideTooltip(_this.tooltipImmediateExit);
+                //this.hideTooltip(this.tooltipImmediateExit);
             });
         }
         // content close on click outside
         if (this.tooltipCloseOnClickOutside) {
             this.documentClickEvent = this.renderer.listen(document, 'click', function (event) {
                 var contains = tooltip.contains(event.target);
-                if (!contains)
-                    _this.hideTooltip();
+                //if(!contains) this.hideTooltip();
             });
         }
     };

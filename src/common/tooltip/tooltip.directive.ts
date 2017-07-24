@@ -60,7 +60,7 @@ export class TooltipDirective implements OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.hideTooltip(true);
+    //this.hideTooltip(true);
   }
 
   @HostListener('focusin')
@@ -73,7 +73,7 @@ export class TooltipDirective implements OnDestroy {
   @HostListener('blur')
   onBlur(): void {
     if(this.listensForFocus) {
-      this.hideTooltip(true);
+      //this.hideTooltip(true);
     }
   }
 
@@ -95,14 +95,14 @@ export class TooltipDirective implements OnDestroy {
         if(contains) return;
       }
 
-      this.hideTooltip(this.tooltipImmediateExit);
+      //this.hideTooltip(this.tooltipImmediateExit);
     }
   }
 
   @HostListener('click')
   onMouseClick() {
     if(this.listensForHover) {
-      this.hideTooltip(true);
+      //this.hideTooltip(true);
     }
   }
 
@@ -138,7 +138,7 @@ export class TooltipDirective implements OnDestroy {
     // content mouse leave listener
     if(this.tooltipCloseOnMouseLeave) {
       this.mouseLeaveContentEvent = this.renderer.listen(tooltip, 'mouseleave', () => {
-        this.hideTooltip(this.tooltipImmediateExit);
+        //this.hideTooltip(this.tooltipImmediateExit);
       });
     }
 
@@ -146,7 +146,7 @@ export class TooltipDirective implements OnDestroy {
     if(this.tooltipCloseOnClickOutside) {
       this.documentClickEvent = this.renderer.listen(document, 'click', (event) => {
         const contains = tooltip.contains(event.target);
-        if(!contains) this.hideTooltip();
+        //if(!contains) this.hideTooltip();
       });
     }
   }
