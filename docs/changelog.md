@@ -1,5 +1,17 @@
 # Changelog
 
+## 6.0.0
+- Breaking: Removed `showSeriesOnHover` option of line-chart
+- Refactor: Improved performance of line and area chart tooltips (#463)
+- Enhancement: Added `roundEdges` input property to bar charts (#408)
+- Enhancement: Tooltip elements are not created if tooltips are disabled (#415)
+- Enhancement: Added the option to define reference lines in line charts (#422)
+- Enhancement: Improved animations
+- Bug: Fixed timeline select issue (#425)
+- Chore: Upgraded angular to 4.2.5
+- Demo: Added timeline filter bar chart demo
+- Demo: Added Combo chart (bar and line) demo (#432)
+
 ## 5.3.1
 - Bug: Fix bug where the axis component would not emit a dimensionsChanged event in some cases
 
@@ -23,7 +35,7 @@
 - Enhancement: Disable pointer if no click events are attached to number cards (#378)
 - Enhancement: Added gradiant to tree map chart (#382)
 - Enhancement: Added support for inverted colors from rgba values in number cards (#366)
-- Enhancement: Added value and albel formatting to tree map (#383)
+- Enhancement: Added value and label formatting to tree map (#383)
 - Refactor: loremess restrictive angular dependency versioning (#358)
 - Bug: Fixed types in gauge chart (#364)
 - Bug: Fixed axis and tooltips on bubble chart (#352)

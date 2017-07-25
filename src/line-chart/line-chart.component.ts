@@ -63,6 +63,9 @@ import { id } from '../utils/id';
           [showLabel]="showYAxisLabel"
           [labelText]="yAxisLabel"
           [tickFormatting]="yAxisTickFormatting"
+          [referenceLines]="referenceLines"
+          [showRefLines]="showRefLines"
+          [showRefLabels]="showRefLabels"
           (dimensionsChanged)="updateYAxisWidth($event)">
         </svg:g>
         <svg:g [attr.clip-path]="clipPath">
@@ -79,32 +82,36 @@ import { id } from '../utils/id';
               [hasRange]="hasRange"
             />
           </svg:g>
-          <svg:g ngx-charts-area-tooltip
-            [xSet]="xSet"
-            [xScale]="xScale"
-            [yScale]="yScale"
-            [results]="results"
-            [height]="dims.height"
-            [colors]="colors"
-            [tooltipDisabled]="tooltipDisabled"
-            [tooltipTemplate]="seriesTooltipTemplate"
-            (hover)="updateHoveredVertical($event)"
-          />
-          <svg:g *ngFor="let series of results">
-            <svg:g ngx-charts-circle-series
+
+          <svg:g *ngIf="!tooltipDisabled" (mouseleave)="hideCircles()">
+            <svg:g ngx-charts-tooltip-area
+              [dims]="dims"
+              [xSet]="xSet"
               [xScale]="xScale"
               [yScale]="yScale"
+              [results]="results"
               [colors]="colors"
-              [data]="series"
-              [scaleType]="scaleType"
-              [visibleValue]="hoveredVertical"
-              [activeEntries]="activeEntries"
               [tooltipDisabled]="tooltipDisabled"
-              [tooltipTemplate]="tooltipTemplate"
-              (select)="onClick($event, series)"
-              (activate)="onActivate($event)"
-              (deactivate)="onDeactivate($event)"
+              [tooltipTemplate]="seriesTooltipTemplate"
+              (hover)="updateHoveredVertical($event)"
             />
+
+            <svg:g *ngFor="let series of results">
+              <svg:g ngx-charts-circle-series
+                [xScale]="xScale"
+                [yScale]="yScale"
+                [colors]="colors"
+                [data]="series"
+                [scaleType]="scaleType"
+                [visibleValue]="hoveredVertical"
+                [activeEntries]="activeEntries"
+                [tooltipDisabled]="tooltipDisabled"
+                [tooltipTemplate]="tooltipTemplate"
+                (select)="onClick($event, series)"
+                (activate)="onActivate($event)"
+                (deactivate)="onDeactivate($event)"
+              />
+            </svg:g>
           </svg:g>
         </svg:g>
       </svg:g>
@@ -171,7 +178,9 @@ export class LineChartComponent extends BaseChartComponent {
   @Input() yAxisTickFormatting: any;
   @Input() roundDomains: boolean = false;
   @Input() tooltipDisabled: boolean = false;
-  @Input() showSeriesOnHover: boolean = true;
+  @Input() showRefLines: boolean = false;
+  @Input() referenceLines: any;
+  @Input() showRefLabels: boolean = true;
 
   @Output() activate: EventEmitter<any> = new EventEmitter();
   @Output() deactivate: EventEmitter<any> = new EventEmitter();
@@ -200,7 +209,6 @@ export class LineChartComponent extends BaseChartComponent {
   filteredDomain: any;
   legendOptions: any;
   hasRange: boolean; // whether the line has a min-max range around it
-
   timelineWidth: any;
   timelineHeight: number = 50;
   timelineXScale: any;
@@ -223,7 +231,7 @@ export class LineChartComponent extends BaseChartComponent {
       showXLabel: this.showXAxisLabel,
       showYLabel: this.showYAxisLabel,
       showLegend: this.legend,
-      legendType: this.schemeType
+      legendType: this.schemeType,
     });
 
     if (this.timeline) {
@@ -288,17 +296,25 @@ export class LineChartComponent extends BaseChartComponent {
     if (this.scaleType === 'time') {
       const min = Math.min(...values);
       const max = Math.max(...values);
-      domain = [min, max];
+      domain = [new Date(min), new Date(max)];
+      this.xSet = [...values].sort((a, b) => {
+        const aDate = a.getTime();
+        const bDate = b.getTime();
+        if (aDate > bDate) return 1;
+        if (bDate > aDate) return -1;
+        return 0;
+      });
     } else if (this.scaleType === 'linear') {
       values = values.map(v => Number(v));
       const min = Math.min(...values);
       const max = Math.max(...values);
       domain = [min, max];
+      this.xSet = [...values].sort();
     } else {
       domain = values;
+      this.xSet = values;
     }
 
-    this.xSet = values;
     return domain;
   }
 
@@ -466,13 +482,16 @@ export class LineChartComponent extends BaseChartComponent {
   }
 
   onActivate(item) {
+    this.deactivateAll();
+
     const idx = this.activeEntries.findIndex(d => {
       return d.name === item.name && d.value === item.value;
     });
     if (idx > -1) {
       return;
     }
-    this.activeEntries = this.showSeriesOnHover ? [ item, ...this.activeEntries ] : this.activeEntries;
+
+    this.activeEntries = [item];
     this.activate.emit({ value: item, entries: this.activeEntries });
   }
 

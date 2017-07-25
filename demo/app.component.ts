@@ -7,9 +7,10 @@ import * as d3 from 'd3';
 
 import { colorSets } from '../src/utils/color-sets';
 import { formatLabel } from '../src/common/label.helper';
-import { single, multi, bubble, generateData, generateGraph, treemap } from './data';
+import { single, multi, bubble, generateData, generateGraph, treemap, timelineFilterBarData } from './data';
 import { data as countries } from 'emoji-flags';
 import chartGroups from './chartTypes';
+import { barChart, lineChartSeries } from './combo-chart-data';
 
 const monthName = new Intl.DateTimeFormat('en-us', { month: 'short' });
 const weekdayName = new Intl.DateTimeFormat('en-us', { weekday: 'short' });
@@ -48,6 +49,7 @@ export class AppComponent implements OnInit {
   calendarData: any[];
   statusData: any[];
   sparklineData: any[];
+  timelineFilterBarData: any[];
   graph: { links: any[], nodes: any[] };
   bubble: any;
   linearScale: boolean = false;
@@ -156,6 +158,30 @@ export class AppComponent implements OnInit {
   gaugeValue: number = 50; // linear gauge value
   gaugePreviousValue: number = 70;
 
+  // Combo Chart
+  barChart: any[] = barChart;
+  lineChartSeries: any[] = lineChartSeries;
+  lineChartScheme = {
+    name: 'coolthree',
+    selectable: true,
+    group: 'Ordinal',
+    domain: [
+      '#01579b', '#7aa3e5', '#a8385d', '#00bfa5'
+    ]
+  };
+
+  comboBarScheme = {
+    name: 'singleLightBlue',
+    selectable: true,
+    group: 'Ordinal',
+    domain: [
+      '#01579b'
+    ]
+  };
+
+  showRightYAxisLabel: boolean = true;
+  yAxisLabelRight: string = 'Utilization';
+
   // demos
   totalSales = 0;
   salePrice = 100;
@@ -167,6 +193,17 @@ export class AppComponent implements OnInit {
   treemap: any[];
   treemapPath: any[] = [];
   sumBy: string = 'Size';
+
+  // Reference lines
+  showRefLines: boolean = true;
+  showRefLabels: boolean = true;
+
+  // Supports any number of reference lines.
+  refLines = [
+    { value: 42500, name: 'Maximum' },
+    { value: 37750, name: 'Average' },
+    { value: 33000, name: 'Minimum' }
+  ];
 
   constructor(public location: Location) {
     this.mathFunction = this.getFunction();
@@ -191,6 +228,7 @@ export class AppComponent implements OnInit {
     this.calendarData = this.getCalendarData();
     this.statusData = this.getStatusData();
     this.sparklineData = generateData(1, false, 30);
+    this.timelineFilterBarData = timelineFilterBarData();
   }
 
   get dateDataWithOrWithoutRange() {
@@ -584,4 +622,45 @@ export class AppComponent implements OnInit {
   getFlag(country) {
     return this.countries.find(c => c.name === country).emoji;
   }
+
+  onFilter(event) {
+    console.log('timeline filter', event);
+  }
+
+  /*
+  **
+  Combo Chart
+  **
+  [yLeftAxisScaleFactor]="yLeftAxisScale" and [yRightAxisScaleFactor]="yRightAxisScale"
+  exposes the left and right min and max axis values for custom scaling, it is probably best to
+  scale one axis in relation to the other axis but for flexibility to scale either the left or
+  right axis bowth were exposed.
+  **
+  */
+
+  yLeftAxisScale(min, max) {
+    return {min: `${min}`, max: `${max}`};
+  }
+
+  yRightAxisScale(min, max) {
+    return {min: `${min}`, max: `${max}`};
+  }
+
+  yLeftTickFormat(data) {
+    return `${data.toLocaleString()}`;
+  }
+
+  yRightTickFormat(data) {
+    return `${data}%`;
+  }
+  /*
+  **
+  End of Combo Chart
+  **
+  */
+
+  onSelect(event) {
+    console.log(event);
+  }
+
 }

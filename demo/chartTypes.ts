@@ -141,7 +141,8 @@ const chartGroups = [
           'colorScheme', 'schemeType', 'showXAxis', 'showYAxis', 'gradient',
           'showLegend', 'legendTitle', 'showXAxisLabel', 'xAxisLabel', 'showYAxisLabel',
           'yAxisLabel', 'autoScale', 'timeline', 'showGridLines', 'curve',
-          'rangeFillOpacity', 'roundDomains', 'tooltipDisabled'
+          'rangeFillOpacity', 'roundDomains', 'tooltipDisabled', 'showRefLines',
+          'referenceLines', 'showRefLabels'
         ],
         defaults: {
           yAxisLabel: 'GDP Per Capita',
@@ -285,6 +286,16 @@ const chartGroups = [
     name: 'Demos',
     charts: [
       {
+        name: 'Combo Chart',
+        selector: 'combo-chart',
+        inputFormat: 'comboChart',
+        options: [
+          'showXAxis', 'showYAxis', 'gradient',
+          'showLegend', 'legendTitle', 'showXAxisLabel', 'xAxisLabel', 'showYAxisLabel', 'yAxisLabel',
+          'showGridLines', 'roundDomains', 'tooltipDisabled'
+        ]
+      },
+      {
         name: 'Heat Map - Calendar',
         selector: 'calendar',
         inputFormat: 'calendarData',
@@ -335,6 +346,32 @@ const chartGroups = [
         inputFormat: 'multiSeries',
         options: [
           'curve'
+        ]
+      },
+      {
+        name: 'Line Chart with Reference Lines',
+        selector: 'line-reference-lines',
+        inputFormat: 'multiSeries',
+        options: [
+          'colorScheme', 'schemeType', 'showXAxis', 'showYAxis', 'gradient',
+          'showLegend', 'legendTitle', 'showXAxisLabel', 'xAxisLabel', 'showYAxisLabel',
+          'yAxisLabel', 'autoScale', 'timeline', 'showGridLines', 'curve',
+          'rangeFillOpacity', 'roundDomains', 'tooltipDisabled', 'showRefLines',
+          'referenceLines', 'showRefLabels'
+        ],
+        defaults: {
+          yAxisLabel: 'GDP Per Capita',
+          xAxisLabel: 'Year',
+          linearScale: false
+        }
+      },
+      {
+        name: 'Timeline Filter Bar Chart',
+        selector: 'timeline-filter-bar-chart-demo',
+        inputFormat: 'singleSeries',
+        options: [
+          'colorScheme', 'schemeType', 'showXAxis', 'showYAxis', 'gradient', 'showGridLines',
+          'showXAxisLabel', 'xAxisLabel', 'showYAxisLabel', 'yAxisLabel'
         ]
       }
     ]
