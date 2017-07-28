@@ -55,6 +55,7 @@ export class LegendComponent implements OnChanges {
   constructor(private cd: ChangeDetectorRef, private zone: NgZone) { }
 
   ngOnChanges(changes: SimpleChanges): void {
+    console.log(this.averages);
     this.update();
   }
 

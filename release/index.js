@@ -10764,7 +10764,7 @@ __decorate([
 LegendEntryComponent = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
         selector: 'ngx-charts-legend-entry',
-        template: "\n    <span \n      [title]=\"formattedLabel\"\n      tabindex=\"-1\"\n      [class.active]=\"isActive\"\n      (click)=\"select.emit(formattedLabel)\">\n      <span\n        class=\"legend-label-color\"\n        [style.background-color]=\"color\"\n        (click)=\"toggle.emit(formattedLabel)\">\n      </span>\n      <span class=\"legend-label-text\">\n        {{trimmedLabel}}\n      </span>\n      <span class=\"legend-label-text\">\n        {{average}}\n      </span>\n    </span>\n  ",
+        template: "\n    <span \n      [title]=\"formattedLabel\"\n      tabindex=\"-1\"\n      [class.active]=\"isActive\"\n      (click)=\"select.emit(formattedLabel)\">\n      <span\n        class=\"legend-label-color\"\n        [style.background-color]=\"color\"\n        (click)=\"toggle.emit(formattedLabel)\">\n      </span>\n      <span class=\"legend-label-text\" [style.width]=\"initial\">\n        {{trimmedLabel}}\n      </span>\n      <span class=\"legend-label-text\" [style.width]=\"initial\">\n        {{average}}\n      </span>\n    </span>\n  ",
         changeDetection: __WEBPACK_IMPORTED_MODULE_0__angular_core__["ChangeDetectionStrategy"].OnPush
     })
 ], LegendEntryComponent);
@@ -10817,6 +10817,7 @@ var LegendComponent = (function () {
         this.legendEntries = [];
     }
     LegendComponent.prototype.ngOnChanges = function (changes) {
+        console.log(this.averages);
         this.update();
     };
     LegendComponent.prototype.update = function () {

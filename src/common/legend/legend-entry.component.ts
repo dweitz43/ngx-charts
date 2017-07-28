@@ -20,10 +20,10 @@ import {
         [style.background-color]="color"
         (click)="toggle.emit(formattedLabel)">
       </span>
-      <span class="legend-label-text">
+      <span class="legend-label-text" [style.width]="initial">
         {{trimmedLabel}}
       </span>
-      <span class="legend-label-text">
+      <span class="legend-label-text" [style.width]="initial">
         {{average}}
       </span>
     </span>
