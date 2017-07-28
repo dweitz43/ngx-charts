@@ -10,7 +10,6 @@ var LegendComponent = (function () {
         this.legendEntries = [];
     }
     LegendComponent.prototype.ngOnChanges = function (changes) {
-        console.log(this.averages);
         this.update();
     };
     LegendComponent.prototype.update = function () {
