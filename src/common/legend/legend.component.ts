@@ -9,8 +9,8 @@ import {
   template: `
     <div [style.width.px]="width">
       <header class="legend-title">
-        <span class="legend-title-text">{{title}}</span>
-        <span class="legend-title-text">Avg</span>
+        <span class="legend-title-text stat">{{title}}</span>
+        <span class="legend-title-text avg">Avg</span>
       </header>
       <div class="legend-wrap">
         <ul class="legend-labels"
