@@ -10731,7 +10731,7 @@ __decorate([
 ], LegendEntryComponent.prototype, "isActive", void 0);
 __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
-    __metadata("design:type", Number)
+    __metadata("design:type", Object)
 ], LegendEntryComponent.prototype, "average", void 0);
 __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Output"])(),
@@ -10764,7 +10764,7 @@ __decorate([
 LegendEntryComponent = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
         selector: 'ngx-charts-legend-entry',
-        template: "\n    <span \n      [title]=\"formattedLabel\"\n      tabindex=\"-1\"\n      [class.active]=\"isActive\"\n      (click)=\"select.emit(formattedLabel)\">\n      <span\n        class=\"legend-label-color\"\n        [style.background-color]=\"color\"\n        (click)=\"toggle.emit(formattedLabel)\">\n      </span>\n      <span class=\"legend-label-text\" [style.width]=\"initial\">\n        {{trimmedLabel}}\n      </span>\n      <span class=\"legend-label-text\" [style.width]=\"initial\">\n        {{average}}\n      </span>\n    </span>\n  ",
+        template: "\n    <span \n      [title]=\"formattedLabel\"\n      tabindex=\"-1\"\n      [class.active]=\"isActive\"\n      (click)=\"select.emit(formattedLabel)\">\n      <span\n        class=\"legend-label-color\"\n        [style.background-color]=\"color\"\n        (click)=\"toggle.emit(formattedLabel)\">\n      </span>\n      <span class=\"legend-label-text\" [style.width]=\"initial\">\n        {{trimmedLabel}}\n      </span>\n      <span class=\"legend-label-text\" [style.width]=\"initial\">\n        {{average?.value | number:'1.0-2'}}\n      </span>\n    </span>\n  ",
         changeDetection: __WEBPACK_IMPORTED_MODULE_0__angular_core__["ChangeDetectionStrategy"].OnPush
     })
 ], LegendEntryComponent);

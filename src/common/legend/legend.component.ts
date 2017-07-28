@@ -44,7 +44,7 @@ export class LegendComponent implements OnChanges {
   @Input() height;
   @Input() width;
   @Input() activeEntries;
-  @Input() averages: number[];
+  @Input() averages: any[];
 
   @Output() labelClick: EventEmitter<any> = new EventEmitter();
   @Output() labelActivate: EventEmitter<any> = new EventEmitter();

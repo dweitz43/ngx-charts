@@ -24,7 +24,7 @@ import {
         {{trimmedLabel}}
       </span>
       <span class="legend-label-text" [style.width]="initial">
-        {{average}}
+        {{average?.value | number:'1.0-2'}}
       </span>
     </span>
   `,
@@ -36,7 +36,7 @@ export class LegendEntryComponent {
   @Input() label: any;
   @Input() formattedLabel: string;
   @Input() isActive: boolean = false;
-  @Input() average: number;
+  @Input() average: any;
 
   @Output() select: EventEmitter<any> = new EventEmitter();
   @Output() activate: EventEmitter<any> = new EventEmitter();

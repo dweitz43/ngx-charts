@@ -160,7 +160,7 @@ export class LineChartComponent extends BaseChartComponent {
 
   @Input() legend;
   @Input() legendTitle: string = 'Legend';
-  @Input() legendAverages: number[] = [];
+  @Input() legendAverages: any[] = [];
   @Input() xAxis;
   @Input() yAxis;
   @Input() showXAxisLabel;
