@@ -26,7 +26,12 @@ export { LegendEntryComponent };
 LegendEntryComponent.decorators = [
     { type: Component, args: [{
                 selector: 'ngx-charts-legend-entry',
-                template: "\n    <span \n      [title]=\"formattedLabel\"\n      tabindex=\"-1\"\n      [class.active]=\"isActive\"\n      (click)=\"select.emit(formattedLabel)\">\n      <span\n        class=\"legend-label-color\"\n        [style.background-color]=\"color\"\n        (click)=\"toggle.emit(formattedLabel)\">\n      </span>\n      <span class=\"legend-label-text\" [style.width]=\"initial\">\n        {{trimmedLabel}}\n      </span>\n      <span class=\"legend-label-text\" [style.width]=\"initial\">\n        {{average?.value | number:'1.0-2'}}\n      </span>\n    </span>\n  ",
+                template: "\n    <span \n      [title]=\"formattedLabel\"\n      tabindex=\"-1\"\n      [class.active]=\"isActive\"\n      (click)=\"select.emit(formattedLabel)\">\n      <span\n        class=\"legend-label-color\"\n        [style.background-color]=\"color\"\n        (click)=\"toggle.emit(formattedLabel)\">\n      </span>\n      <span class=\"legend-label-text name\">\n        {{trimmedLabel}}\n      </span>\n      <span class=\"legend-label-text average\">\n        {{average?.value | number:'1.0-2'}}\n      </span>\n    </span>\n  ",
+                styles: [
+                    '.legend-label-text { padding-right: 5px; }',
+                    '.name { width: 65%; }',
+                    '.average { width: 20%; }'
+                ],
                 changeDetection: ChangeDetectionStrategy.OnPush
             },] },
 ];

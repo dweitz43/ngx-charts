@@ -20,14 +20,19 @@ import {
         [style.background-color]="color"
         (click)="toggle.emit(formattedLabel)">
       </span>
-      <span class="legend-label-text" [style.width]="initial">
+      <span class="legend-label-text name">
         {{trimmedLabel}}
       </span>
-      <span class="legend-label-text" [style.width]="initial">
+      <span class="legend-label-text average">
         {{average?.value | number:'1.0-2'}}
       </span>
     </span>
   `,
+  styles: [
+    '.legend-label-text { padding-right: 5px; }',
+    '.name { width: 65%; }',
+    '.average { width: 20%; }'
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class LegendEntryComponent {
