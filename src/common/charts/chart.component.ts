@@ -39,6 +39,7 @@ import { TooltipService } from '../tooltip';
         [data]="legendOptions.domain"
         [title]="legendOptions.title"
         [colors]="legendOptions.colors"
+        [averages]="legendOptions.averages"
         [height]="view[1]"
         [width]="legendWidth"
         [activeEntries]="activeEntries"

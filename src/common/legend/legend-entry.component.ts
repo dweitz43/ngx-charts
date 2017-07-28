@@ -23,6 +23,9 @@ import {
       <span class="legend-label-text">
         {{trimmedLabel}}
       </span>
+      <span class="legend-label-text">
+        {{average}}
+      </span>
     </span>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -33,6 +36,7 @@ export class LegendEntryComponent {
   @Input() label: any;
   @Input() formattedLabel: string;
   @Input() isActive: boolean = false;
+  @Input() average: number;
 
   @Output() select: EventEmitter<any> = new EventEmitter();
   @Output() activate: EventEmitter<any> = new EventEmitter();

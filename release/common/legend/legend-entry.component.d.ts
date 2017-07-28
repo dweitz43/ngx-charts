@@ -4,6 +4,7 @@ export declare class LegendEntryComponent {
     label: any;
     formattedLabel: string;
     isActive: boolean;
+    average: number;
     select: EventEmitter<any>;
     activate: EventEmitter<any>;
     deactivate: EventEmitter<any>;

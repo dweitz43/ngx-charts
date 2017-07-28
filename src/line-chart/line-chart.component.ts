@@ -160,6 +160,7 @@ export class LineChartComponent extends BaseChartComponent {
 
   @Input() legend;
   @Input() legendTitle: string = 'Legend';
+  @Input() legendAverages: number[] = [];
   @Input() xAxis;
   @Input() yAxis;
   @Input() showXAxisLabel;
@@ -458,7 +459,8 @@ export class LineChartComponent extends BaseChartComponent {
       scaleType: this.schemeType,
       colors: undefined,
       domain: [],
-      title: undefined
+      title: undefined,
+      averages: this.legendAverages
     };
     if (opts.scaleType === 'ordinal') {
       opts.domain = this.seriesDomain;

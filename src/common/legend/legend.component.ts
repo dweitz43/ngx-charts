@@ -15,12 +15,13 @@ import {
         <ul class="legend-labels"
           [style.max-height.px]="height - 45">
           <li
-            *ngFor="let entry of legendEntries; trackBy: trackBy"
+            *ngFor="let entry of legendEntries; let i = index; trackBy: trackBy"
             class="legend-label">
             <ngx-charts-legend-entry
               [label]="entry.label"
               [formattedLabel]="entry.formattedLabel"
               [color]="entry.color"
+              [average]="averages[i]"
               [isActive]="isActive(entry)"
               (select)="labelClick.emit($event)"
               (activate)="activate($event)"
@@ -43,6 +44,7 @@ export class LegendComponent implements OnChanges {
   @Input() height;
   @Input() width;
   @Input() activeEntries;
+  @Input() averages: number[];
 
   @Output() labelClick: EventEmitter<any> = new EventEmitter();
   @Output() labelActivate: EventEmitter<any> = new EventEmitter();

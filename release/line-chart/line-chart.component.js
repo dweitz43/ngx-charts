@@ -17,6 +17,7 @@ var LineChartComponent = (function (_super) {
     function LineChartComponent() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
         _this.legendTitle = 'Legend';
+        _this.legendAverages = [];
         _this.showGridLines = true;
         _this.curve = curveLinear;
         _this.activeEntries = [];
@@ -244,7 +245,8 @@ var LineChartComponent = (function (_super) {
             scaleType: this.schemeType,
             colors: undefined,
             domain: [],
-            title: undefined
+            title: undefined,
+            averages: this.legendAverages
         };
         if (opts.scaleType === 'ordinal') {
             opts.domain = this.seriesDomain;
@@ -323,6 +325,7 @@ LineChartComponent.ctorParameters = function () { return []; };
 LineChartComponent.propDecorators = {
     'legend': [{ type: Input },],
     'legendTitle': [{ type: Input },],
+    'legendAverages': [{ type: Input },],
     'xAxis': [{ type: Input },],
     'yAxis': [{ type: Input },],
     'showXAxisLabel': [{ type: Input },],
