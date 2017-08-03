@@ -106,7 +106,6 @@ var BaseChartComponent = (function () {
         var _this = this;
         var source = Observable.fromEvent(window, 'resize', null, null);
         var subscription = source.debounceTime(200).subscribe(function (e) {
-            console.log(e);
             _this.update();
             if (_this.cd) {
                 _this.cd.markForCheck();
@@ -116,6 +115,7 @@ var BaseChartComponent = (function () {
     };
     BaseChartComponent.prototype.bindContainerResizeEvent = function () {
         var _this = this;
+        console.log(this.chartElement.nativeElement.parentElement);
         var source = Observable.fromEvent(this.chartElement.nativeElement.parentElement, 'resize', null, null);
         var subscription = source.debounceTime(200).subscribe(function (e) {
             console.log(e);
