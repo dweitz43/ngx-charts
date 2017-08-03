@@ -116,10 +116,7 @@ var BaseChartComponent = (function () {
     };
     BaseChartComponent.prototype.bindContainerResizeEvent = function () {
         var _this = this;
-        console.log(this.chartElement);
-        console.log(this.chartElement.nativeElement);
-        console.log(window);
-        var source = Observable.fromEvent(this.chartElement.nativeElement, 'resize', null, null);
+        var source = Observable.fromEvent(this.chartElement.nativeElement.parentElement, 'resize', null, null);
         var subscription = source.debounceTime(200).subscribe(function (e) {
             console.log(e);
             _this.update();

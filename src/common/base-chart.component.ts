@@ -154,10 +154,7 @@ export class BaseChartComponent implements OnChanges, AfterViewInit, OnDestroy {
   }
 
   private bindContainerResizeEvent(): void {
-    console.log(this.chartElement);
-    console.log(this.chartElement.nativeElement);
-    console.log(window);
-    const source = Observable.fromEvent(this.chartElement.nativeElement, 'resize', null, null);
+    const source = Observable.fromEvent(this.chartElement.nativeElement.parentElement, 'resize', null, null);
     const subscription = source.debounceTime(200).subscribe(e => {
       console.log(e);
       this.update();
