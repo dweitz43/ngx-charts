@@ -17,6 +17,7 @@ export declare class BaseChartComponent implements OnChanges, AfterViewInit, OnD
     width: number;
     height: number;
     resizeSubscription: any;
+    containerResizeSubscription: any;
     visibilityObserver: VisibilityObserver;
     constructor(chartElement: ElementRef, zone: NgZone, cd: ChangeDetectorRef, location: LocationStrategy);
     ngAfterViewInit(): void;
@@ -31,6 +32,7 @@ export declare class BaseChartComponent implements OnChanges, AfterViewInit, OnD
     formatDates(): void;
     protected unbindEvents(): void;
     private bindWindowResizeEvent();
+    private bindContainerResizeEvent();
     /**
      * Clones the data into a new object
      *
