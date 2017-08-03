@@ -9099,6 +9099,7 @@ var BaseChartComponent = (function () {
         var _this = this;
         var source = __WEBPACK_IMPORTED_MODULE_2_rxjs_Observable__["Observable"].fromEvent(window, 'resize', null, null);
         var subscription = source.debounceTime(200).subscribe(function (e) {
+            console.log(e);
             _this.update();
             if (_this.cd) {
                 _this.cd.markForCheck();
@@ -9110,6 +9111,7 @@ var BaseChartComponent = (function () {
         var _this = this;
         var source = __WEBPACK_IMPORTED_MODULE_2_rxjs_Observable__["Observable"].fromEvent(this.chartElement.nativeElement, 'resize', null, null);
         var subscription = source.debounceTime(200).subscribe(function (e) {
+            console.log(e);
             _this.update();
             if (_this.cd) {
                 _this.cd.markForCheck();
