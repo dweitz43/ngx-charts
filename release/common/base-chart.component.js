@@ -16,7 +16,6 @@ var BaseChartComponent = (function () {
     }
     BaseChartComponent.prototype.ngAfterViewInit = function () {
         this.bindWindowResizeEvent();
-        this.bindContainerResizeEvent();
         // listen for visibility of the element for hidden by default scenario
         this.visibilityObserver = new VisibilityObserver(this.chartElement, this.zone);
         this.visibilityObserver.visible.subscribe(this.update.bind(this));
@@ -98,9 +97,6 @@ var BaseChartComponent = (function () {
         if (this.resizeSubscription) {
             this.resizeSubscription.unsubscribe();
         }
-        if (this.containerResizeSubscription) {
-            this.containerResizeSubscription.unsubscribe();
-        }
     };
     BaseChartComponent.prototype.bindWindowResizeEvent = function () {
         var _this = this;
@@ -112,19 +108,6 @@ var BaseChartComponent = (function () {
             }
         });
         this.resizeSubscription = subscription;
-    };
-    BaseChartComponent.prototype.bindContainerResizeEvent = function () {
-        var _this = this;
-        console.log(this.chartElement.nativeElement.parentElement);
-        var source = Observable.fromEvent(this.chartElement.nativeElement.parentElement, 'resize', null, null);
-        var subscription = source.debounceTime(200).subscribe(function (e) {
-            console.log(e);
-            _this.update();
-            if (_this.cd) {
-                _this.cd.markForCheck();
-            }
-        });
-        this.containerResizeSubscription = subscription;
     };
     /**
      * Clones the data into a new object

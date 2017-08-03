@@ -26,7 +26,6 @@ export class BaseChartComponent implements OnChanges, AfterViewInit, OnDestroy {
   width: number;
   height: number;
   resizeSubscription: any;
-  containerResizeSubscription: any;
   visibilityObserver: VisibilityObserver;
 
   constructor(
@@ -38,7 +37,6 @@ export class BaseChartComponent implements OnChanges, AfterViewInit, OnDestroy {
 
   ngAfterViewInit(): void {
     this.bindWindowResizeEvent();
-    this.bindContainerResizeEvent();
 
     // listen for visibility of the element for hidden by default scenario
     this.visibilityObserver = new VisibilityObserver(this.chartElement, this.zone);
@@ -136,9 +134,6 @@ export class BaseChartComponent implements OnChanges, AfterViewInit, OnDestroy {
     if (this.resizeSubscription) {
       this.resizeSubscription.unsubscribe();
     }
-    if (this.containerResizeSubscription) {
-      this.containerResizeSubscription.unsubscribe();
-    }
   }
 
   private bindWindowResizeEvent(): void {
@@ -150,19 +145,6 @@ export class BaseChartComponent implements OnChanges, AfterViewInit, OnDestroy {
       }
     });
     this.resizeSubscription = subscription;
-  }
-
-  private bindContainerResizeEvent(): void {
-    console.log(this.chartElement.nativeElement.parentElement);
-    const source = Observable.fromEvent(this.chartElement.nativeElement.parentElement, 'resize', null, null);
-    const subscription = source.debounceTime(200).subscribe(e => {
-      console.log(e);
-      this.update();
-      if (this.cd) {
-        this.cd.markForCheck();
-      }
-    });
-    this.containerResizeSubscription = subscription;
   }
 
   /**
