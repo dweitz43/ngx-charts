@@ -9109,6 +9109,9 @@ var BaseChartComponent = (function () {
     };
     BaseChartComponent.prototype.bindContainerResizeEvent = function () {
         var _this = this;
+        console.log(this.chartElement);
+        console.log(this.chartElement.nativeElement);
+        console.log(window);
         var source = __WEBPACK_IMPORTED_MODULE_2_rxjs_Observable__["Observable"].fromEvent(this.chartElement.nativeElement, 'resize', null, null);
         var subscription = source.debounceTime(200).subscribe(function (e) {
             console.log(e);
