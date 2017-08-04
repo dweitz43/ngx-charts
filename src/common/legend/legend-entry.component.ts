@@ -23,7 +23,7 @@ import {
       <span class="legend-label-text name">
         {{trimmedLabel}}
       </span>
-      <span class="legend-label-text average">
+      <span class="legend-label-text average" *ngIf="!isNaN(average?.value)">
         {{average?.value | number:'1.0-2'}}
       </span>
     </span>

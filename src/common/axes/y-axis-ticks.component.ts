@@ -56,7 +56,7 @@ import { scaleBand } from 'd3-scale';
     </svg:g>
 
     <svg:g *ngFor="let refLine of referenceLines">
-      <svg:g *ngIf="showRefLines" [attr.transform]="transform(refLine.value)">
+      <svg:g *ngIf="showRefLines && !isNaN(refLine.value)" [attr.transform]="transform(refLine.value)">
         <svg:line class="refline-path gridline-path-horizontal"
           x1="0"
           [attr.fill]="refLine.color"
