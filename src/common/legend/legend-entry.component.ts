@@ -23,7 +23,7 @@ import {
       <span class="legend-label-text name">
         {{trimmedLabel}}
       </span>
-      <span class="legend-label-text average" *ngIf="!isNaN(average?.value)">
+      <span class="legend-label-text average" *ngIf="!isNotANumber(average?.value)">
         {{average?.value | number:'1.0-2'}}
       </span>
     </span>
@@ -60,6 +60,10 @@ export class LegendEntryComponent {
   @HostListener('mouseleave')
   onMouseLeave(): void {
     this.deactivate.emit({name: this.label});
+  }
+
+  isNotANumber(value) {
+    return isNaN(value);
   }
 
 }

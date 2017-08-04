@@ -12,4 +12,5 @@ export declare class LegendEntryComponent {
     readonly trimmedLabel: string;
     onMouseEnter(): void;
     onMouseLeave(): void;
+    isNotANumber(value: any): boolean;
 }
