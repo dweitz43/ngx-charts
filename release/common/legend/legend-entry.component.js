@@ -29,6 +29,9 @@ var LegendEntryComponent = /** @class */ (function () {
     LegendEntryComponent.prototype.onMouseLeave = function () {
         this.deactivate.emit({ name: this.label });
     };
+    LegendEntryComponent.prototype.isNotANumber = function (value) {
+        return isNaN(value);
+    };
     __decorate([
         Input(),
         __metadata("design:type", String)
@@ -45,6 +48,10 @@ var LegendEntryComponent = /** @class */ (function () {
         Input(),
         __metadata("design:type", Boolean)
     ], LegendEntryComponent.prototype, "isActive", void 0);
+    __decorate([
+        Input(),
+        __metadata("design:type", Object)
+    ], LegendEntryComponent.prototype, "average", void 0);
     __decorate([
         Output(),
         __metadata("design:type", EventEmitter)
@@ -76,7 +83,12 @@ var LegendEntryComponent = /** @class */ (function () {
     LegendEntryComponent = __decorate([
         Component({
             selector: 'ngx-charts-legend-entry',
-            template: "\n    <span \n      [title]=\"formattedLabel\"\n      tabindex=\"-1\"\n      [class.active]=\"isActive\"\n      (click)=\"select.emit(formattedLabel)\">\n      <span\n        class=\"legend-label-color\"\n        [style.background-color]=\"color\"\n        (click)=\"toggle.emit(formattedLabel)\">\n      </span>\n      <span class=\"legend-label-text\">\n        {{trimmedLabel}}\n      </span>\n    </span>\n  ",
+            template: "\n    <span \n      [title]=\"formattedLabel\"\n      tabindex=\"-1\"\n      [class.active]=\"isActive\"\n      (click)=\"select.emit(formattedLabel)\">\n      <span\n        class=\"legend-label-color\"\n        [style.background-color]=\"color\"\n        (click)=\"toggle.emit(formattedLabel)\">\n      </span>\n      <span class=\"legend-label-text name\">\n        {{trimmedLabel}}\n      </span>\n      <span class=\"legend-label-text average\" *ngIf=\"!isNotANumber(average?.value)\">\n        {{average?.value | number:'1.0-2'}}\n      </span>\n    </span>\n  ",
+            styles: [
+                '.legend-label-text { padding-right: 5px; }',
+                '.name { width: 65%; }',
+                '.average { width: 20%; }'
+            ],
             changeDetection: ChangeDetectionStrategy.OnPush
         })
     ], LegendEntryComponent);
