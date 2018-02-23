@@ -10,13 +10,11 @@ import {
 } from '@angular/core';
 import {
   trigger,
-  state,
   style,
   animate,
   transition
 } from '@angular/animations';
 import { formatLabel } from '../common/label.helper';
-import { id } from '../utils/id';
 
 @Component({
   selector: 'g[ngx-charts-bubble-series]',
@@ -119,6 +117,7 @@ export class BubbleSeriesComponent implements OnChanges {
           series: seriesName,
           name: d.name,
           value: d.y,
+          x: d.x,
           radius: d.r
         };
 

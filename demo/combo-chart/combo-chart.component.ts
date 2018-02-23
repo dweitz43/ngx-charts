@@ -12,7 +12,6 @@ import {
   ContentChild,
   TemplateRef
 } from '@angular/core';
-import { PathLocationStrategy } from '@angular/common';
 import {
   trigger,
   state,
@@ -21,10 +20,12 @@ import {
   transition
 } from '@angular/animations';
 
-import { NgxChartsModule, BaseChartComponent, LineComponent, LineSeriesComponent } from '../../src';
+import {
+  NgxChartsModule, BaseChartComponent, LineComponent, LineSeriesComponent,
+  calculateViewDimensions, ViewDimensions, ColorHelper
+ } from '../../src';
 import { area, line, curveLinear } from 'd3-shape';
 import { scaleBand, scaleLinear, scalePoint, scaleTime } from 'd3-scale';
-import { calculateViewDimensions, ViewDimensions, ColorHelper } from '../../src';
 
 @Component({
   selector: 'combo-chart-component',
@@ -34,6 +35,7 @@ import { calculateViewDimensions, ViewDimensions, ColorHelper } from '../../src'
       [showLegend]="legend"
       [legendOptions]="legendOptions"
       [activeEntries]="activeEntries"
+      [animations]="animations"
       (legendLabelClick)="onClick($event)"
       (legendLabelActivate)="onActivate($event)"
       (legendLabelDeactivate)="onDeactivate($event)">
@@ -80,6 +82,7 @@ import { calculateViewDimensions, ViewDimensions, ColorHelper } from '../../src'
           [gradient]="gradient"
           tooltipDisabled="true"
           [activeEntries]="activeEntries"
+          [animations]="animations"
           (activate)="onActivate($event)"
           (deactivate)="onDeactivate($event)"
           (bandwidth)="updateLineWidth($event)"
@@ -98,6 +101,7 @@ import { calculateViewDimensions, ViewDimensions, ColorHelper } from '../../src'
               [scaleType]="scaleType"
               [curve]="curve"
               [rangeFillOpacity]="rangeFillOpacity"
+              [animations]="animations"
             />
           </svg:g>
 
@@ -165,6 +169,7 @@ export class ComboChartComponent extends BaseChartComponent  {
   @Input() yLeftAxisScaleFactor: any;
   @Input() yRightAxisScaleFactor: any;
   @Input() rangeFillOpacity: number;
+  @Input() animations: boolean = true;
 
   @Output() activate: EventEmitter<any> = new EventEmitter();
   @Output() deactivate: EventEmitter<any> = new EventEmitter();
@@ -249,9 +254,7 @@ export class ComboChartComponent extends BaseChartComponent  {
     this.transform = `translate(${ this.dims.xOffset } , ${ this.margin[0] })`;
   }
 
-  // line scale
-
-    deactivateAll() {
+  deactivateAll() {
     this.activeEntries = [...this.activeEntries];
     for (const entry of this.activeEntries) {
       this.deactivate.emit({ value: entry, entries: [] });
@@ -265,7 +268,7 @@ export class ComboChartComponent extends BaseChartComponent  {
     this.deactivateAll();
   }
 
-    updateHoveredVertical(item): void {
+  updateHoveredVertical(item): void {
     this.hoveredVertical = item.value;
     this.deactivateAll();
   }
@@ -278,14 +281,14 @@ export class ComboChartComponent extends BaseChartComponent  {
 
   getSeriesDomain(): any[] {
     this.combinedSeries = this.lineChart.slice(0);
-    this.combinedSeries.push(
-      {name: this.yAxisLabel,
+    this.combinedSeries.push({
+      name: this.yAxisLabel,
       series: this.results
     });
     return this.combinedSeries.map(d => d.name);
   }
 
-    isDate(value): boolean {
+  isDate(value): boolean {
     if (value instanceof Date) {
       return true;
     }
@@ -293,7 +296,7 @@ export class ComboChartComponent extends BaseChartComponent  {
     return false;
   }
 
-    getScaleType(values): string {
+  getScaleType(values): string {
     let date = true;
     let num = true;
 
@@ -316,7 +319,7 @@ export class ComboChartComponent extends BaseChartComponent  {
     let values = [];
 
     for (const results of this.lineChart) {
-      for (const d of results.series){
+      for (const d of results.series) {
         if (!values.includes(d.name)) {
           values.push(d.name);
         }
@@ -347,7 +350,7 @@ export class ComboChartComponent extends BaseChartComponent  {
     const domain = [];
 
     for (const results of this.lineChart) {
-      for (const d of results.series){
+      for (const d of results.series) {
         if (domain.indexOf(d.value) < 0) {
           domain.push(d.value);
         }
@@ -400,17 +403,15 @@ export class ComboChartComponent extends BaseChartComponent  {
     }
 
     return scale;
-}
+  }
 
-    getYScaleLine(domain, height): any {
+  getYScaleLine(domain, height): any {
     const scale = scaleLinear()
       .range([height, 0])
       .domain(domain);
 
     return this.roundDomains ? scale.nice() : scale;
   }
-
-  // bar scales
 
   getXScale(): any {
     this.xDomain = this.getXDomain();

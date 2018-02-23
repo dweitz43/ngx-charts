@@ -7,13 +7,12 @@ import {
   ChangeDetectionStrategy,
   TemplateRef
  } from '@angular/core';
- import {
-   trigger,
-   state,
-   style,
-   animate,
-   transition
- } from '@angular/animations';
+import {
+  trigger,
+  style,
+  animate,
+  transition
+} from '@angular/animations';
 import { formatLabel } from '../common/label.helper';
 
 @Component({
@@ -22,6 +21,7 @@ import { formatLabel } from '../common/label.helper';
     <svg:g ngx-charts-bar
       *ngFor="let bar of bars; trackBy: trackBy"
       [@animationState]="'active'"
+      [@.disabled]="!animations"
       [width]="bar.width"
       [height]="bar.height"
       [x]="bar.x"
@@ -42,7 +42,8 @@ import { formatLabel } from '../common/label.helper';
       [tooltipType]="tooltipType"
       [tooltipTitle]="tooltipTemplate ? undefined : bar.tooltipText"
       [tooltipTemplate]="tooltipTemplate"
-      [tooltipContext]="bar.data">
+      [tooltipContext]="bar.data"
+      [animations]="animations">
     </svg:g>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -71,6 +72,7 @@ export class SeriesVerticalComponent implements OnChanges {
   @Input() tooltipDisabled: boolean = false;
   @Input() tooltipTemplate: TemplateRef<any>;
   @Input() roundEdges: boolean;
+  @Input() animations: boolean = true;
 
   @Output() select = new EventEmitter();
   @Output() activate = new EventEmitter();
