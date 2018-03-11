@@ -5,16 +5,20 @@ import {
   EventEmitter,
   OnChanges,
   ChangeDetectionStrategy,
-  TemplateRef
- } from '@angular/core';
- import {
-   trigger,
-   state,
-   style,
-   animate,
-   transition
- } from '@angular/animations';
+  TemplateRef,
+} from '@angular/core';
+import {
+  trigger,
+  style,
+  animate,
+  transition,
+} from '@angular/animations';
 import { formatLabel } from '../common/label.helper';
+
+export enum D0Types {
+  positive = 'positive',
+  negative = 'negative'
+}
 
 @Component({
   selector: 'g[ngx-charts-series-vertical]',
@@ -22,6 +26,7 @@ import { formatLabel } from '../common/label.helper';
     <svg:g ngx-charts-bar
       *ngFor="let bar of bars; trackBy: trackBy"
       [@animationState]="'active'"
+      [@.disabled]="!animations"
       [width]="bar.width"
       [height]="bar.height"
       [x]="bar.x"
@@ -42,7 +47,8 @@ import { formatLabel } from '../common/label.helper';
       [tooltipType]="tooltipType"
       [tooltipTitle]="tooltipTemplate ? undefined : bar.tooltipText"
       [tooltipTemplate]="tooltipTemplate"
-      [tooltipContext]="bar.data">
+      [tooltipContext]="bar.data"
+      [animations]="animations">
     </svg:g>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -71,6 +77,7 @@ export class SeriesVerticalComponent implements OnChanges {
   @Input() tooltipDisabled: boolean = false;
   @Input() tooltipTemplate: TemplateRef<any>;
   @Input() roundEdges: boolean;
+  @Input() animations: boolean = true;
 
   @Output() select = new EventEmitter();
   @Output() activate = new EventEmitter();
@@ -78,7 +85,7 @@ export class SeriesVerticalComponent implements OnChanges {
 
   tooltipPlacement: string;
   tooltipType: string;
-  
+
   bars: any;
   x: any;
   y: any;
@@ -94,7 +101,12 @@ export class SeriesVerticalComponent implements OnChanges {
       width = this.xScale.bandwidth();
     }
 
-    let d0 = 0;
+    const d0 = {
+      [D0Types.positive]: 0,
+      [D0Types.negative]: 0
+    };
+    let d0Type = D0Types.positive;
+
     let total;
     if (this.type === 'normalized') {
       total = this.series.map(d => d.value).reduce((sum, d) => sum + d, 0);
@@ -105,6 +117,7 @@ export class SeriesVerticalComponent implements OnChanges {
       const label = d.name;
       const formattedLabel = formatLabel(label);
       const roundEdges = this.roundEdges;
+      d0Type = value > 0 ? D0Types.positive : D0Types.negative;
 
       const bar: any = {
         value,
@@ -115,7 +128,7 @@ export class SeriesVerticalComponent implements OnChanges {
         formattedLabel,
         height: 0,
         x: 0,
-        y: 0
+        y: 0,
       };
 
       if (this.type === 'standard') {
@@ -128,9 +141,9 @@ export class SeriesVerticalComponent implements OnChanges {
           bar.y = this.yScale(value);
         }
       } else if (this.type === 'stacked') {
-        const offset0 = d0;
+        const offset0 = d0[d0Type];
         const offset1 = offset0 + value;
-        d0 += value;
+        d0[d0Type] += value;
 
         bar.height = this.yScale(offset0) - this.yScale(offset1);
         bar.x = 0;
@@ -138,9 +151,9 @@ export class SeriesVerticalComponent implements OnChanges {
         bar.offset0 = offset0;
         bar.offset1 = offset1;
       } else if (this.type === 'normalized') {
-        let offset0 = d0;
+        let offset0 = d0[d0Type];
         let offset1 = offset0 + value;
-        d0 += value;
+        d0[d0Type] += value;
 
         if (total > 0) {
           offset0 = (offset0 * 100) / total;
@@ -166,7 +179,8 @@ export class SeriesVerticalComponent implements OnChanges {
           bar.gradientStops = this.colors.getLinearGradientStops(value);
         } else {
           bar.color = this.colors.getColor(bar.offset1);
-          bar.gradientStops = this.colors.getLinearGradientStops(bar.offset1, bar.offset0);
+          bar.gradientStops =
+            this.colors.getLinearGradientStops(bar.offset1, bar.offset0);
         }
       }
 
@@ -187,11 +201,11 @@ export class SeriesVerticalComponent implements OnChanges {
 
   updateTooltipSettings() {
     this.tooltipPlacement = this.tooltipDisabled ? undefined : 'top';
-    this.tooltipType =  this.tooltipDisabled ? undefined : 'tooltip';
+    this.tooltipType = this.tooltipDisabled ? undefined : 'tooltip';
   }
 
   isActive(entry): boolean {
-    if(!this.activeEntries) return false;
+    if (!this.activeEntries) return false;
     const item = this.activeEntries.find(d => {
       return entry.name === d.name && entry.series === d.series;
     });

@@ -9,7 +9,6 @@ import {
   ContentChild,
   TemplateRef
 } from '@angular/core';
-import { PathLocationStrategy } from '@angular/common';
 import { scaleLinear, scalePoint, scaleTime } from 'd3-scale';
 import { curveLinear } from 'd3-shape';
 
@@ -26,6 +25,7 @@ import { id } from '../utils/id';
       [showLegend]="legend"
       [legendOptions]="legendOptions"
       [activeEntries]="activeEntries"
+      [animations]="animations"
       (legendLabelClick)="onClick($event)"
       (legendLabelActivate)="onActivate($event)"
       (legendLabelDeactivate)="onDeactivate($event)">
@@ -69,6 +69,7 @@ import { id } from '../utils/id';
               [scaleType]="scaleType"
               [gradient]="gradient"
               [curve]="curve"
+              [animations]="animations"
             />
           </svg:g>
 
@@ -105,7 +106,7 @@ import { id } from '../utils/id';
         </svg:g>
       </svg:g>
       <svg:g ngx-charts-timeline
-        *ngIf="timeline && scaleType === 'time'"
+        *ngIf="timeline && scaleType != 'ordinal'"
         [attr.transform]="timelineTransform"
         [results]="results"
         [view]="[timelineWidth, height]"
@@ -124,6 +125,7 @@ import { id } from '../utils/id';
             [scaleType]="scaleType"
             [gradient]="gradient"
             [curve]="curve"
+            [animations]="animations"
           />
         </svg:g>
       </svg:g>
@@ -155,6 +157,10 @@ export class AreaChartComponent extends BaseChartComponent {
   @Input() yAxisTickFormatting: any;
   @Input() roundDomains: boolean = false;
   @Input() tooltipDisabled: boolean = false;
+  @Input() xScaleMin: any;
+  @Input() xScaleMax: any;
+  @Input() yScaleMin: number;
+  @Input() yScaleMax: number;
 
   @Output() activate: EventEmitter<any> = new EventEmitter();
   @Output() deactivate: EventEmitter<any> = new EventEmitter();
@@ -229,12 +235,8 @@ export class AreaChartComponent extends BaseChartComponent {
 
     this.transform = `translate(${ this.dims.xOffset }, ${ this.margin[0] })`;
 
-    const pageUrl = this.location instanceof PathLocationStrategy
-      ? this.location.path()
-      : '';
-
     this.clipPathId = 'clip' + id().toString();
-    this.clipPath = `url(${pageUrl}#${this.clipPathId})`;
+    this.clipPath = `url(#${this.clipPathId})`;
   }
 
   updateTimeline(): void {
@@ -251,7 +253,7 @@ export class AreaChartComponent extends BaseChartComponent {
     let values = [];
 
     for (const results of this.results) {
-      for (const d of results.series){
+      for (const d of results.series) {
         if (!values.includes(d.name)) {
           values.push(d.name);
         }
@@ -261,9 +263,23 @@ export class AreaChartComponent extends BaseChartComponent {
     this.scaleType = this.getScaleType(values);
     let domain = [];
 
+    if (this.scaleType === 'linear') {
+      values = values.map(v => Number(v));
+    }
+
+    let min;
+    let max;
+    if (this.scaleType === 'time' || this.scaleType === 'linear') {
+      min = this.xScaleMin
+        ? this.xScaleMin
+        : Math.min(...values);
+
+      max = this.xScaleMax
+        ? this.xScaleMax
+        : Math.max(...values);
+    }
+
     if (this.scaleType === 'time') {
-      const min = Math.min(...values);
-      const max = Math.max(...values);
       domain = [new Date(min), new Date(max)];
       this.xSet = [...values].sort((a, b) => {
         const aDate = a.getTime();
@@ -273,11 +289,9 @@ export class AreaChartComponent extends BaseChartComponent {
         return 0;
       });
     } else if (this.scaleType === 'linear') {
-      values = values.map(v => Number(v));
-      const min = Math.min(...values);
-      const max = Math.max(...values);
       domain = [min, max];
-      this.xSet = [...values].sort();
+      // Use compare function to sort numbers numerically
+      this.xSet = [...values].sort((a, b) => (a - b));
     } else {
       domain = values;
       this.xSet = values;
@@ -290,18 +304,25 @@ export class AreaChartComponent extends BaseChartComponent {
     const domain = [];
 
     for (const results of this.results) {
-      for (const d of results.series){
+      for (const d of results.series) {
         if (!domain.includes(d.value)) {
           domain.push(d.value);
         }
       }
     }
 
-    let min = Math.min(...domain);
-    const max = Math.max(...domain);
+    const values = [...domain];
     if (!this.autoScale) {
-      min = Math.min(0, min);
+      values.push(0);
     }
+
+    const min = this.yScaleMin
+      ? this.yScaleMin
+      : Math.min(...values);
+
+    const max = this.yScaleMax
+      ? this.yScaleMax
+      : Math.max(...values);
 
     return [min, max];
   }

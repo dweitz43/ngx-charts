@@ -66,6 +66,11 @@ export class ColorHelper {
 
       return (this.scale(valueScale(value)));
     } else {
+
+      if(typeof this.customColors === 'function') {
+        return this.customColors(value);
+      }
+
       const formattedValue = value.toString();
       let found: any; // todo type customColors
       if (this.customColors && this.customColors.length > 0) {
@@ -121,7 +126,7 @@ export class ColorHelper {
         continue;
       }
 
-      if (offset.toFixed(4) >= (endVal - colorValueScale.bandwidth()).toFixed(4) ) {
+      if (offset.toFixed(4) >= (endVal - colorValueScale.bandwidth()).toFixed(4)) {
         break;
       }
 

@@ -10,19 +10,19 @@ import {
 } from '@angular/core';
 import {
   trigger,
-  state,
   style,
   animate,
   transition
 } from '@angular/animations';
- import { formatLabel } from '../common/label.helper';
+import { formatLabel } from '../common/label.helper';
+import { D0Types } from './series-vertical.component';
 
 @Component({
   selector: 'g[ngx-charts-series-horizontal]',
   template: `
     <svg:g ngx-charts-bar
       *ngFor="let bar of bars; trackBy:trackBy"
-      [@animationState]="'active'"
+      [@animationState]="'active'"     
       [width]="bar.width"
       [height]="bar.height"
       [x]="bar.x"
@@ -35,6 +35,7 @@ import {
       (select)="click($event)"
       [gradient]="gradient"
       [isActive]="isActive(bar.data)"
+      [animations]="animations"
       (activate)="activate.emit($event)"
       (deactivate)="deactivate.emit($event)"
       ngx-tooltip
@@ -75,6 +76,7 @@ export class SeriesHorizontal implements OnChanges {
   @Input() seriesName: string;
   @Input() tooltipTemplate: TemplateRef<any>;
   @Input() roundEdges: boolean;
+  @Input() animations: boolean = true;
 
   @Output() select = new EventEmitter();
   @Output() activate = new EventEmitter();
@@ -89,7 +91,12 @@ export class SeriesHorizontal implements OnChanges {
 
   update(): void {
     this.updateTooltipSettings();
-    let d0 = 0;
+    const d0 = {
+      [D0Types.positive]: 0,
+      [D0Types.negative]: 0
+    };
+    let d0Type: D0Types;
+    d0Type = D0Types.positive;
     let total;
     if (this.type === 'normalized') {
       total = this.series.map(d => d.value).reduce((sum, d) => sum + d, 0);
@@ -100,6 +107,7 @@ export class SeriesHorizontal implements OnChanges {
       const label = d.name;
       const formattedLabel = formatLabel(label);
       const roundEdges = this.roundEdges;
+      d0Type = value > 0 ? D0Types.positive : D0Types.negative;
 
       const bar: any = {
         value,
@@ -120,9 +128,9 @@ export class SeriesHorizontal implements OnChanges {
         }
         bar.y = this.yScale(label);
       } else if (this.type === 'stacked') {
-        const offset0 = d0;
+        const offset0 = d0[d0Type];
         const offset1 = offset0 + value;
-        d0 += value;
+        d0[d0Type] += value;
 
         bar.width = this.xScale(offset1) - this.xScale(offset0);
         bar.x = this.xScale(offset0);
@@ -130,9 +138,9 @@ export class SeriesHorizontal implements OnChanges {
         bar.offset0 = offset0;
         bar.offset1 = offset1;
       } else if (this.type === 'normalized') {
-        let offset0 = d0;
+        let offset0 = d0[d0Type];
         let offset1 = offset0 + value;
-        d0 += value;
+        d0[d0Type] += value;
 
         if (total > 0) {
           offset0 = (offset0 * 100) / total;
