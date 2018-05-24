@@ -7,7 +7,16 @@ import * as d3 from 'd3';
 
 import { colorSets } from '../src/utils/color-sets';
 import { formatLabel } from '../src/common/label.helper';
-import { single, multi, bubble, generateData, generateGraph, treemap, timelineFilterBarData } from './data';
+import {
+  single,
+  multi,
+  bubble,
+  generateData,
+  generateGraph,
+  treemap,
+  timelineFilterBarData,
+  fiscalYearReport
+} from './data';
 import { data as countries } from 'emoji-flags';
 import chartGroups from './chartTypes';
 import { barChart, lineChartSeries } from './combo-chart-data';
@@ -44,6 +53,7 @@ export class AppComponent implements OnInit {
   countries: any[];
   single: any[];
   multi: any[];
+  fiscalYearReport: any[];
   dateData: any[];
   dateDataWithRange: any[];
   calendarData: any[];
@@ -85,6 +95,7 @@ export class AppComponent implements OnInit {
   xScaleMax: any;
   yScaleMin: number;
   yScaleMax: number;
+  showDataLabel = false;
 
   curves = {
     Basis: shape.curveBasis,
@@ -222,7 +233,8 @@ export class AppComponent implements OnInit {
       graph: generateGraph(50),
       bubble,
       plotData: this.generatePlotData(),
-      treemap
+      treemap,
+      fiscalYearReport
     });
 
     this.treemapProcess();
@@ -666,6 +678,10 @@ export class AppComponent implements OnInit {
 
   onSelect(event) {
     console.log(event);
+  }
+
+  dblclick(event) {
+    console.log('Doube click', event);
   }
 
 }
