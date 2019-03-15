@@ -35,6 +35,7 @@ var LineChartComponent = /** @class */ (function (_super) {
         var _this = _super !== null && _super.apply(this, arguments) || this;
         _this.legendTitle = 'Legend';
         _this.legendPosition = 'right';
+        _this.legendAverages = [];
         _this.showGridLines = true;
         _this.curve = curveLinear;
         _this.activeEntries = [];
@@ -243,7 +244,8 @@ var LineChartComponent = /** @class */ (function (_super) {
             colors: undefined,
             domain: [],
             title: undefined,
-            position: this.legendPosition
+            position: this.legendPosition,
+            averages: this.legendAverages
         };
         if (opts.scaleType === 'ordinal') {
             opts.domain = this.seriesDomain;
@@ -305,6 +307,10 @@ var LineChartComponent = /** @class */ (function (_super) {
         Input(),
         __metadata("design:type", String)
     ], LineChartComponent.prototype, "legendPosition", void 0);
+    __decorate([
+        Input(),
+        __metadata("design:type", Array)
+    ], LineChartComponent.prototype, "legendAverages", void 0);
     __decorate([
         Input(),
         __metadata("design:type", Object)

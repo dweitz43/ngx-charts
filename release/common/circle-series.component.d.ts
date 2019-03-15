@@ -23,9 +23,7 @@ export declare class CircleSeriesComponent implements OnChanges, OnInit {
     ngOnInit(): void;
     ngOnChanges(changes: SimpleChanges): void;
     update(): void;
-  getCircles(): any[];
-    getActiveCircle(): {};
-    mapDataPointToCircle(d: any, i: number): any;
+    getCircles(): any[];
     getTooltipText({ tooltipLabel, value, seriesName, min, max }: {
         tooltipLabel: any;
         value: any;
