@@ -5,6 +5,7 @@ import { BaseChartComponent } from '../common/base-chart.component';
 export declare class BarHorizontal2DComponent extends BaseChartComponent {
     legend: boolean;
     legendTitle: string;
+    legendPosition: string;
     xAxis: any;
     yAxis: any;
     showXAxisLabel: any;
@@ -16,6 +17,10 @@ export declare class BarHorizontal2DComponent extends BaseChartComponent {
     showGridLines: boolean;
     activeEntries: any[];
     schemeType: string;
+    trimXAxisTicks: boolean;
+    trimYAxisTicks: boolean;
+    maxXAxisTickLength: number;
+    maxYAxisTickLength: number;
     xAxisTickFormatting: any;
     yAxisTickFormatting: any;
     xAxisTicks: any[];
@@ -60,11 +65,12 @@ export declare class BarHorizontal2DComponent extends BaseChartComponent {
         colors: any;
         domain: any[];
         title: any;
+        position: string;
     };
-    updateYAxisWidth({width}: {
+    updateYAxisWidth({ width }: {
         width: any;
     }): void;
-    updateXAxisHeight({height}: {
+    updateXAxisHeight({ height }: {
         height: any;
     }): void;
     onDataLabelMaxWidthChanged(event: any, groupIndex: any): void;

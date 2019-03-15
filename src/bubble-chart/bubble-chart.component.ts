@@ -20,7 +20,8 @@ import { scaleLinear } from 'd3-scale';
 import { BaseChartComponent } from '../common/base-chart.component';
 import { calculateViewDimensions, ViewDimensions } from '../common/view-dimensions.helper';
 import { ColorHelper } from '../common/color.helper';
-import { getScaleType, getDomain, getScale } from './bubble-chart.utils';
+import { getScaleType } from '../common/domain.helper';
+import { getDomain, getScale } from './bubble-chart.utils';
 import { id } from '../utils/id';
 
 @Component({
@@ -51,6 +52,8 @@ import { id } from '../utils/id';
           [xScale]="xScale"
           [showLabel]="showXAxisLabel"
           [labelText]="xAxisLabel"
+          [trimTicks]="trimXAxisTicks"
+          [maxTickLength]="maxXAxisTickLength"
           [tickFormatting]="xAxisTickFormatting"
           [ticks]="xAxisTicks"
           (dimensionsChanged)="updateXAxisHeight($event)"/>
@@ -61,6 +64,8 @@ import { id } from '../utils/id';
           [dims]="dims"
           [showLabel]="showYAxisLabel"
           [labelText]="yAxisLabel"
+          [trimTicks]="trimYAxisTicks"
+          [maxTickLength]="maxYAxisTickLength"
           [tickFormatting]="yAxisTickFormatting"
           [ticks]="yAxisTicks"
           (dimensionsChanged)="updateYAxisWidth($event)"/>
@@ -116,12 +121,17 @@ export class BubbleChartComponent extends BaseChartComponent {
   @Input() showGridLines: boolean = true;
   @Input() legend = false;
   @Input() legendTitle: string = 'Legend';
+  @Input() legendPosition: string = 'right';
   @Input() xAxis: boolean = true;
   @Input() yAxis: boolean = true;
   @Input() showXAxisLabel: boolean;
   @Input() showYAxisLabel: boolean;
   @Input() xAxisLabel: string;
   @Input() yAxisLabel: string;
+  @Input() trimXAxisTicks: boolean = true;
+  @Input() trimYAxisTicks: boolean = true;
+  @Input() maxXAxisTickLength: number = 16;
+  @Input() maxYAxisTickLength: number = 16;
   @Input() xAxisTickFormatting: any;
   @Input() yAxisTickFormatting: any;
   @Input() xAxisTicks: any[];
@@ -131,7 +141,6 @@ export class BubbleChartComponent extends BaseChartComponent {
   @Input() minRadius = 3;
   @Input() autoScale: boolean;
   @Input() schemeType = 'ordinal';
-  @Input() legendPosition: string = 'right';
   @Input() tooltipDisabled: boolean = false;
   @Input() xScaleMin: any;
   @Input() xScaleMax: any;
@@ -187,7 +196,8 @@ export class BubbleChartComponent extends BaseChartComponent {
       showXLabel: this.showXAxisLabel,
       showYLabel: this.showYAxisLabel,
       showLegend: this.legend,
-      legendType: this.schemeType
+      legendType: this.schemeType,
+      legendPosition: this.legendPosition
     });
 
     this.seriesDomain = this.results.map(d => d.name);

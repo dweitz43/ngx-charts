@@ -3,6 +3,8 @@ import { XAxisTicksComponent } from './x-axis-ticks.component';
 export declare class XAxisComponent implements OnChanges {
     xScale: any;
     dims: any;
+    trimTicks: boolean;
+    maxTickLength: number;
     tickFormatting: any;
     showGridLines: boolean;
     showLabel: any;
@@ -25,7 +27,7 @@ export declare class XAxisComponent implements OnChanges {
     ticksComponent: XAxisTicksComponent;
     ngOnChanges(changes: SimpleChanges): void;
     update(): void;
-    emitTicksHeight({height}: {
+    emitTicksHeight({ height }: {
         height: any;
     }): void;
 }

@@ -6,12 +6,17 @@ export declare class BubbleChartComponent extends BaseChartComponent {
     showGridLines: boolean;
     legend: boolean;
     legendTitle: string;
+    legendPosition: string;
     xAxis: boolean;
     yAxis: boolean;
     showXAxisLabel: boolean;
     showYAxisLabel: boolean;
     xAxisLabel: string;
     yAxisLabel: string;
+    trimXAxisTicks: boolean;
+    trimYAxisTicks: boolean;
+    maxXAxisTickLength: number;
+    maxYAxisTickLength: number;
     xAxisTickFormatting: any;
     yAxisTickFormatting: any;
     xAxisTicks: any[];
@@ -21,7 +26,6 @@ export declare class BubbleChartComponent extends BaseChartComponent {
     minRadius: number;
     autoScale: boolean;
     schemeType: string;
-    legendPosition: string;
     tooltipDisabled: boolean;
     xScaleMin: any;
     xScaleMax: any;
@@ -64,10 +68,10 @@ export declare class BubbleChartComponent extends BaseChartComponent {
     getXDomain(): any[];
     getYDomain(): any[];
     getRDomain(): number[];
-    updateYAxisWidth({width}: {
+    updateYAxisWidth({ width }: {
         width: any;
     }): void;
-    updateXAxisHeight({height}: {
+    updateXAxisHeight({ height }: {
         height: any;
     }): void;
     onActivate(item: any): void;

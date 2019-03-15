@@ -12,6 +12,7 @@ import { formatLabel } from '../label.helper';
 var LegendComponent = /** @class */ (function () {
     function LegendComponent(cd) {
         this.cd = cd;
+        this.horizontal = false;
         this.labelClick = new EventEmitter();
         this.labelActivate = new EventEmitter();
         this.labelDeactivate = new EventEmitter();
@@ -89,8 +90,8 @@ var LegendComponent = /** @class */ (function () {
     ], LegendComponent.prototype, "activeEntries", void 0);
     __decorate([
         Input(),
-        __metadata("design:type", Array)
-    ], LegendComponent.prototype, "averages", void 0);
+        __metadata("design:type", Object)
+    ], LegendComponent.prototype, "horizontal", void 0);
     __decorate([
         Output(),
         __metadata("design:type", EventEmitter)
@@ -106,7 +107,7 @@ var LegendComponent = /** @class */ (function () {
     LegendComponent = __decorate([
         Component({
             selector: 'ngx-charts-legend',
-            template: "\n    <div [style.width.px]=\"width\">\n      <header class=\"legend-title\">\n        <span class=\"legend-title-text stat\">{{title}}</span>\n        <span class=\"legend-title-text avg\">Avg</span>\n      </header>\n      <div class=\"legend-wrap\">\n        <ul class=\"legend-labels\"\n          [style.max-height.px]=\"height - 45\">\n          <li\n            *ngFor=\"let entry of legendEntries; let i = index; trackBy: trackBy\"\n            class=\"legend-label\">\n            <ngx-charts-legend-entry\n              [label]=\"entry.label\"\n              [formattedLabel]=\"entry.formattedLabel\"\n              [color]=\"entry.color\"\n              [average]=\"averages[i]\"\n              [isActive]=\"isActive(entry)\"\n              (select)=\"labelClick.emit($event)\"\n              (activate)=\"activate($event)\"\n              (deactivate)=\"deactivate($event)\">\n            </ngx-charts-legend-entry>\n          </li>\n        </ul>\n      </div>\n    </div>\n  ",
+            template: "\n    <div [style.width.px]=\"width\">\n      <header class=\"legend-title\" *ngIf=\"title?.length > 0\">\n        <span class=\"legend-title-text\">{{title}}</span>\n      </header>\n      <div class=\"legend-wrap\">\n        <ul class=\"legend-labels\"\n            [class.horizontal-legend]=\"horizontal\"\n          [style.max-height.px]=\"height - 45\">\n          <li\n            *ngFor=\"let entry of legendEntries; trackBy: trackBy\"\n            class=\"legend-label\">\n            <ngx-charts-legend-entry\n              [label]=\"entry.label\"\n              [formattedLabel]=\"entry.formattedLabel\"\n              [color]=\"entry.color\"\n              [isActive]=\"isActive(entry)\"\n              (select)=\"labelClick.emit($event)\"\n              (activate)=\"activate($event)\"\n              (deactivate)=\"deactivate($event)\">\n            </ngx-charts-legend-entry>\n          </li>\n        </ul>\n      </div>\n    </div>\n  ",
             styleUrls: ['./legend.component.css'],
             encapsulation: ViewEncapsulation.None,
             changeDetection: ChangeDetectionStrategy.OnPush

@@ -22,7 +22,7 @@ import { calculateViewDimensions, ViewDimensions } from '../common/view-dimensio
 import { ColorHelper } from '../common/color.helper';
 import { BaseChartComponent } from '../common/base-chart.component';
 import { id } from '../utils/id';
-import { getUniqueXDomainValues } from '../common/domain.helper';
+import { getUniqueXDomainValues, getScaleType } from '../common/domain.helper';
 
 @Component({
   selector: 'ngx-charts-line-chart',
@@ -52,6 +52,8 @@ import { getUniqueXDomainValues } from '../common/domain.helper';
           [showGridLines]="showGridLines"
           [showLabel]="showXAxisLabel"
           [labelText]="xAxisLabel"
+          [trimTicks]="trimXAxisTicks"
+          [maxTickLength]="maxXAxisTickLength"
           [tickFormatting]="xAxisTickFormatting"
           [ticks]="xAxisTicks"
           (dimensionsChanged)="updateXAxisHeight($event)">
@@ -63,6 +65,8 @@ import { getUniqueXDomainValues } from '../common/domain.helper';
           [showGridLines]="showGridLines"
           [showLabel]="showYAxisLabel"
           [labelText]="yAxisLabel"
+          [trimTicks]="trimYAxisTicks"
+          [maxTickLength]="maxYAxisTickLength"
           [tickFormatting]="yAxisTickFormatting"
           [ticks]="yAxisTicks"
           [referenceLines]="referenceLines"
@@ -164,6 +168,7 @@ export class LineChartComponent extends BaseChartComponent {
 
   @Input() legend;
   @Input() legendTitle: string = 'Legend';
+  @Input() legendPosition: string = 'right';
   @Input() legendAverages: any[] = [];
   @Input() xAxis;
   @Input() yAxis;
@@ -179,6 +184,10 @@ export class LineChartComponent extends BaseChartComponent {
   @Input() activeEntries: any[] = [];
   @Input() schemeType: string;
   @Input() rangeFillOpacity: number;
+  @Input() trimXAxisTicks: boolean = true;
+  @Input() trimYAxisTicks: boolean = true;
+  @Input() maxXAxisTickLength: number = 16;
+  @Input() maxYAxisTickLength: number = 16;
   @Input() xAxisTickFormatting: any;
   @Input() yAxisTickFormatting: any;
   @Input() xAxisTicks: any[];
@@ -243,6 +252,7 @@ export class LineChartComponent extends BaseChartComponent {
       showYLabel: this.showYAxisLabel,
       showLegend: this.legend,
       legendType: this.schemeType,
+      legendPosition: this.legendPosition
     });
 
     if (this.timeline) {
@@ -284,7 +294,7 @@ export class LineChartComponent extends BaseChartComponent {
   getXDomain(): any[] {
     let values = getUniqueXDomainValues(this.results);
 
-    this.scaleType = this.getScaleType(values);
+    this.scaleType = getScaleType(values);
     let domain = [];
 
     if (this.scaleType === 'linear') {
@@ -399,33 +409,6 @@ export class LineChartComponent extends BaseChartComponent {
     return this.roundDomains ? scale.nice() : scale;
   }
 
-  getScaleType(values): string {
-    let date = true;
-    let num = true;
-
-    for (const value of values) {
-      if (!this.isDate(value)) {
-        date = false;
-      }
-
-      if (typeof value !== 'number') {
-        num = false;
-      }
-    }
-
-    if (date) return 'time';
-    if (num) return 'linear';
-    return 'ordinal';
-  }
-
-  isDate(value): boolean {
-    if (value instanceof Date) {
-      return true;
-    }
-
-    return false;
-  }
-
   updateDomain(domain): void {
     this.filteredDomain = domain;
     this.xDomain = this.filteredDomain;
@@ -472,6 +455,7 @@ export class LineChartComponent extends BaseChartComponent {
       colors: undefined,
       domain: [],
       title: undefined,
+      position: this.legendPosition,
       averages: this.legendAverages
     };
     if (opts.scaleType === 'ordinal') {

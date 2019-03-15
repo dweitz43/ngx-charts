@@ -32,6 +32,7 @@ import { sortLinear, sortByTime, sortByDomain } from '../utils/sort';
         [stops]="areaGradientStops"
         [class.active]="isActive(data)"
         [class.inactive]="isInactive(data)"
+        [animations]="animations"
       />
       <svg:g ngx-charts-line
         class="line-series"
@@ -145,8 +146,8 @@ export class LineSeriesComponent implements OnChanges {
           }
           return value;
         })
-        .y0(d => this.yScale(d.min ? d.min : d.value))
-        .y1(d => this.yScale(d.max ? d.max : d.value))
+        .y0(d => this.yScale(typeof d.min === 'number' ? d.min : d.value))
+        .y1(d => this.yScale(typeof d.max === 'number' ? d.max : d.value))
         .curve(this.curve);
   }
 

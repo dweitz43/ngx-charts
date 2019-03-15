@@ -7,6 +7,7 @@ export declare class LegendComponent implements OnChanges {
     height: any;
     width: any;
     activeEntries: any;
+    horizontal: boolean;
     averages: any[];
     labelClick: EventEmitter<any>;
     labelActivate: EventEmitter<any>;

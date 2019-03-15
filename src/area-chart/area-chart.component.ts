@@ -16,7 +16,7 @@ import { calculateViewDimensions, ViewDimensions } from '../common/view-dimensio
 import { ColorHelper } from '../common/color.helper';
 import { BaseChartComponent } from '../common/base-chart.component';
 import { id } from '../utils/id';
-import { getUniqueXDomainValues } from '../common/domain.helper';
+import { getUniqueXDomainValues, getScaleType } from '../common/domain.helper';
 
 @Component({
   selector: 'ngx-charts-area-chart',
@@ -46,6 +46,8 @@ import { getUniqueXDomainValues } from '../common/domain.helper';
           [showGridLines]="showGridLines"
           [showLabel]="showXAxisLabel"
           [labelText]="xAxisLabel"
+          [trimTicks]="trimXAxisTicks"
+          [maxTickLength]="maxXAxisTickLength"
           [tickFormatting]="xAxisTickFormatting"
           [ticks]="xAxisTicks"
           (dimensionsChanged)="updateXAxisHeight($event)">
@@ -57,6 +59,8 @@ import { getUniqueXDomainValues } from '../common/domain.helper';
           [showGridLines]="showGridLines"
           [showLabel]="showYAxisLabel"
           [labelText]="yAxisLabel"
+          [trimTicks]="trimYAxisTicks"
+          [maxTickLength]="maxYAxisTickLength"
           [tickFormatting]="yAxisTickFormatting"
           [ticks]="yAxisTicks"
           (dimensionsChanged)="updateYAxisWidth($event)">
@@ -144,6 +148,7 @@ export class AreaChartComponent extends BaseChartComponent {
 
   @Input() legend;
   @Input() legendTitle: string = 'Legend';
+  @Input() legendPosition: string = 'right';
   @Input() state;
   @Input() xAxis;
   @Input() yAxis;
@@ -159,6 +164,10 @@ export class AreaChartComponent extends BaseChartComponent {
   @Input() curve: any = curveLinear;
   @Input() activeEntries: any[] = [];
   @Input() schemeType: string;
+  @Input() trimXAxisTicks: boolean = true;
+  @Input() trimYAxisTicks: boolean = true;
+  @Input() maxXAxisTickLength: number = 16;
+  @Input() maxYAxisTickLength: number = 16;
   @Input() xAxisTickFormatting: any;
   @Input() yAxisTickFormatting: any;
   @Input() xAxisTicks: any[];
@@ -218,7 +227,8 @@ export class AreaChartComponent extends BaseChartComponent {
       showXLabel: this.showXAxisLabel,
       showYLabel: this.showYAxisLabel,
       showLegend: this.legend,
-      legendType: this.schemeType
+      legendType: this.schemeType,
+      legendPosition: this.legendPosition
     });
 
     if (this.timeline) {
@@ -260,7 +270,7 @@ export class AreaChartComponent extends BaseChartComponent {
   getXDomain(): any[] {
     let values = getUniqueXDomainValues(this.results);
 
-    this.scaleType = this.getScaleType(values);
+    this.scaleType = getScaleType(values);
     let domain = [];
 
     if (this.scaleType === 'linear') {
@@ -435,7 +445,8 @@ export class AreaChartComponent extends BaseChartComponent {
       scaleType: this.schemeType,
       colors: undefined,
       domain: [],
-      title: undefined
+      title: undefined,
+      position: this.legendPosition
     };
     if (opts.scaleType === 'ordinal') {
       opts.domain = this.seriesDomain;
